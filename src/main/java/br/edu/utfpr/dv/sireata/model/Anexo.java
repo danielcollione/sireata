@@ -48,3 +48,10 @@ public class Anexo {
 	}
 
 }
+
+@Test
+public void test(){
+	assertEquals(21, Anexo(21));
+	assertEquals('houve uma tentativa de reconhecer um anexo', Anexo('houve uma tentativa de reconhecer um anexo'));
+	assetEquals('name', Anexo('name'));
+}
