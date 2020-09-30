@@ -8,14 +8,35 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+
 import br.edu.utfpr.dv.sireata.model.Anexo;
 
+@Entity
 public class AnexoDAO {
-	
-	public Anexo buscarPorId(int id) throws SQLException{
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
+
+	@Id
+	@GeneratedValue(strategy=GerenationType.AUTO)
+	private Long id;
+	Connection conn = null;
+	PreparedStatement stmt = null;
+	ResultSet rs = null;
+
+	protected AnexoDAO() {}
+
+	public AnexoDAO(Connection conn, PreparedStatement stmt, ResultSet rs){
+		this.conn = conn;
+		this.stmt = stmt;
+		this.rs = rs;
+	}
+
+	@Override
+	public Anexo buscarPorId(int id) throws SQLException<AnexoDAO, Long>{
+		
 		
 		try{
 			conn = ConnectionDAO.getInstance().getConnection();
@@ -40,11 +61,9 @@ public class AnexoDAO {
 				conn.close();
 		}
 	}
-	
-	public List<Anexo> listarPorAta(int idAta) throws SQLException{
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
+	@Override
+	public List<Anexo> listarPorAta(int idAta) throws SQLException<AnexoDAO, Long>{
+		
 		
 		try{
 			conn = ConnectionDAO.getInstance().getConnection();
@@ -69,12 +88,10 @@ public class AnexoDAO {
 				conn.close();
 		}
 	}
-	
-	public int salvar(Anexo anexo) throws SQLException{
+	@Override
+	public int salvar(Anexo anexo) throws SQLException<AnexoDAO, Long>{
 		boolean insert = (anexo.getIdAnexo() == 0);
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
+		
 		
 		try{
 			conn = ConnectionDAO.getInstance().getConnection();
@@ -114,10 +131,9 @@ public class AnexoDAO {
 				conn.close();
 		}
 	}
-	
-	public void excluir(int id) throws SQLException{
-		Connection conn = null;
-		Statement stmt = null;
+	@Override
+	public void excluir(int id) throws SQLException<AnexoDAO, Long>{
+		
 		
 		try{
 			conn = ConnectionDAO.getInstance().getConnection();
@@ -131,8 +147,8 @@ public class AnexoDAO {
 				conn.close();
 		}
 	}
-	
-	private Anexo carregarObjeto(ResultSet rs) throws SQLException{
+	@Override
+	private Anexo carregarObjeto(ResultSet rs) throws SQLException<AnexoDAO, Long>{
 		Anexo anexo = new Anexo();
 		
 		anexo.setIdAnexo(rs.getInt("idAnexo"));
